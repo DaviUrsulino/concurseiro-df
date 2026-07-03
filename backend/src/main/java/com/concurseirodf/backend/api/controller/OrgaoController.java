@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class OrgaoController {
     private final OrgaoService orgaoService;
 
     @PostMapping
-    public ResponseEntity<OrgaoResponseDTO> create(@RequestBody OrgaoRequestDTO request) {
+    public ResponseEntity<OrgaoResponseDTO> create(@Valid @RequestBody OrgaoRequestDTO request) {
         return new ResponseEntity<>(orgaoService.create(request), HttpStatus.CREATED);
     }
 

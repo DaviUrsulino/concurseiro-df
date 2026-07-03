@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public class ConcursoController {
     private final ConcursoService concursoService;
 
     @PostMapping
-    public ResponseEntity<ConcursoResponseDTO> create(@RequestBody ConcursoRequestDTO request) {
+    public ResponseEntity<ConcursoResponseDTO> create(@Valid @RequestBody ConcursoRequestDTO request) {
         return new ResponseEntity<>(concursoService.create(request), HttpStatus.CREATED);
     }
 

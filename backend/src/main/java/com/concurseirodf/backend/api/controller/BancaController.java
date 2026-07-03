@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +20,7 @@ public class BancaController {
     private final BancaService bancaService;
 
     @PostMapping
-    public ResponseEntity<BancaResponseDTO> create(@RequestBody BancaRequestDTO request) {
+    public ResponseEntity<BancaResponseDTO> create(@Valid @RequestBody BancaRequestDTO request) {
         return new ResponseEntity<>(bancaService.create(request), HttpStatus.CREATED);
     }
 

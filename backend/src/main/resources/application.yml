@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: concurseiro-df-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/concurseiro_db
+    username: concurseiro
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:sua_chave_aqui}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always

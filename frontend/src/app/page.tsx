@@ -41,7 +41,7 @@ export default function Home() {
               <input
                 id="search-concursos"
                 type="text"
-                placeholder="Ex: SEDF, Novacap, TCDF..."
+                placeholder="Pesquisar..."
                 className="w-full h-14 pl-6 pr-14 rounded-full bg-card/90 backdrop-blur-md border-2 border-primary/20 focus:border-primary focus-ring shadow-xl text-lg transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}

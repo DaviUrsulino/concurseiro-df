@@ -17,10 +17,17 @@ export default function Home() {
   return (
     <div className="w-full flex-1 flex flex-col">
       {/* Hero Section */}
-      <section className="relative w-full py-20 px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden animate-fade-in bg-gradient-to-b from-primary/10 to-background border-b border-border/50">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay pointer-events-none" />
+      <section className="relative w-full py-24 px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden animate-fade-in bg-gradient-to-br from-primary/10 via-background to-accent/5 border-b border-border/50">
+        {/* Decorator Shapes */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-accent/20 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000" />
         
-        <div className="max-w-4xl mx-auto text-center space-y-6 z-10">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        
+        <div className="max-w-4xl mx-auto text-center space-y-6 z-10 relative">
+          <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-bold tracking-wide uppercase inline-block mb-4 shadow-sm">
+            Monitoramento Inteligente
+          </span>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground">
             Editais do <span className="text-primary bg-clip-text">Distrito Federal</span>
           </h1>
@@ -31,15 +38,15 @@ export default function Home() {
           <div className="pt-8 w-full max-w-lg mx-auto relative group">
             <label htmlFor="search-concursos" className="sr-only">Pesquisar concursos pelo nome ou órgão</label>
             <div className="relative flex items-center transition-transform duration-300 hover:scale-[1.02]">
-              <Search className="absolute left-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" aria-hidden="true" />
               <input
                 id="search-concursos"
                 type="text"
                 placeholder="Ex: SEDF, Novacap, TCDF..."
-                className="w-full h-14 pl-12 pr-4 rounded-full bg-card/80 backdrop-blur-md border-2 border-border/50 focus-ring shadow-lg text-lg transition-all"
+                className="w-full h-14 pl-6 pr-14 rounded-full bg-card/90 backdrop-blur-md border-2 border-primary/20 focus:border-primary focus-ring shadow-xl text-lg transition-all"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
+              <Search className="absolute right-5 w-6 h-6 text-muted-foreground group-focus-within:text-primary transition-colors" aria-hidden="true" />
             </div>
           </div>
         </div>

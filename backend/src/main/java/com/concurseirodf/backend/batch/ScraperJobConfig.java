@@ -1,11 +1,16 @@
 package com.concurseirodf.backend.batch;
 
+import com.concurseirodf.backend.domain.entity.Concurso;
+import com.concurseirodf.backend.domain.entity.Orgao;
+import com.concurseirodf.backend.domain.enums.StatusConcurso;
+import com.concurseirodf.backend.domain.repository.ConcursoRepository;
+import com.concurseirodf.backend.domain.repository.OrgaoRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.core.job.Job;
-import org.springframework.batch.core.step.Step;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -19,6 +24,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class ScraperJobConfig {
@@ -33,12 +39,12 @@ public class ScraperJobConfig {
     }
 
     @Bean
-    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager, ItemWriter<Concurso> itemWriter) {
         return new StepBuilder("step1", jobRepository)
-                .<String, String>chunk(10, transactionManager)
+                .<String, Concurso>chunk(10, transactionManager)
                 .reader(itemReader())
-                .processor(itemProcessor())
-                .writer(itemWriter())
+                .processor(itemProcessor(null)) // we will inject it
+                .writer(itemWriter)
                 .build();
     }
 
@@ -53,31 +59,45 @@ public class ScraperJobConfig {
     }
 
     @Bean
-    public ItemProcessor<String, String> itemProcessor() {
+    public ItemProcessor<String, Concurso> itemProcessor(OrgaoRepository orgaoRepository) {
         return link -> {
             log.info("Processando link: {}", link);
             // Aqui conectaríamos no site real com Jsoup.connect(link).get();
             // Para fim de arquitetura, vamos simular o HTML retornado
-            String mockHtml = "<html><body><h1>Concurso SEDF</h1><a href='edital.pdf'>Edital de Abertura</a></body></html>";
+            String mockHtml = "<html><body><h1>Concurso TCDF " + System.currentTimeMillis() + "</h1><a href='edital.pdf'>Edital de Abertura</a></body></html>";
             Document doc = Jsoup.parse(mockHtml);
             
             String tituloHtml = doc.select("h1").text();
             String linkEdital = doc.select("a:contains(Edital)").attr("href");
             
-            if (!linkEdital.isEmpty()) {
+            if (!linkEdital.isEmpty() && orgaoRepository != null) {
                 log.info("Encontrado edital '{}' no link {}", tituloHtml, linkEdital);
-                return "Novo Edital: " + tituloHtml + " - Link: " + linkEdital;
+                
+                // Create Mock Data
+                Orgao orgao = new Orgao();
+                orgao.setNome("Tribunal de Contas do Distrito Federal");
+                orgao.setSigla("TCDF");
+                orgao.setEsfera("Distrital");
+                orgao = orgaoRepository.save(orgao);
+                
+                Concurso concurso = new Concurso();
+                concurso.setTitulo(tituloHtml);
+                concurso.setLinkPaginaOficial(link);
+                concurso.setOrgao(orgao);
+                concurso.setStatus(StatusConcurso.ABERTO);
+                
+                return concurso;
             }
-            return null; // Ignora se não achou nada relevante
+            return null;
         };
     }
 
     @Bean
-    public ItemWriter<String> itemWriter() {
-        return items -> {
-            for (String item : items) {
-                log.info("Salvando no banco de dados (via Service): {}", item);
-                // Aqui injetaríamos o ConcursoService para criar os andamentos reais no banco
+    public ItemWriter<Concurso> itemWriter(ConcursoRepository concursoRepository) {
+        return concursos -> {
+            for (Concurso concurso : concursos) {
+                log.info("Salvando no banco de dados: {}", concurso.getTitulo());
+                concursoRepository.save(concurso);
             }
         };
     }

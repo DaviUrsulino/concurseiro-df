@@ -44,7 +44,6 @@ export default function RootLayout({
               </Link>
               <nav className="flex items-center gap-6 text-sm font-medium">
                 <Link href="/" className="transition-colors hover:text-primary focus-ring rounded-sm">Home</Link>
-                <Link href="/admin" className="transition-colors hover:text-primary focus-ring rounded-sm text-red-500/80 hover:text-red-500">Admin</Link>
               </nav>
             </div>
           </header>

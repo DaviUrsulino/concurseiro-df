@@ -1,65 +1,95 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useConcursos } from "@/hooks/queries";
+import { ConcursoCard } from "@/components/ConcursoCard";
+import { Search, Loader2, AlertCircle } from "lucide-react";
 
 export default function Home() {
+  const { data: concursos, isLoading, isError } = useConcursos();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredConcursos = concursos?.filter((c) =>
+    c.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    c.orgao.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="w-full flex-1 flex flex-col">
+      {/* Hero Section */}
+      <section className="relative w-full py-20 px-6 md:px-12 flex flex-col items-center justify-center overflow-hidden animate-fade-in bg-gradient-to-b from-primary/10 to-background border-b border-border/50">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay pointer-events-none" />
+        
+        <div className="max-w-4xl mx-auto text-center space-y-6 z-10">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-foreground">
+            Editais do <span className="text-primary bg-clip-text">Distrito Federal</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
+            Acompanhe os andamentos, editais e disciplinas dos principais concursos de nível médio e técnico. Extração em tempo real impulsionada por IA.
           </p>
+          
+          <div className="pt-8 w-full max-w-lg mx-auto relative group">
+            <label htmlFor="search-concursos" className="sr-only">Pesquisar concursos pelo nome ou órgão</label>
+            <div className="relative flex items-center transition-transform duration-300 hover:scale-[1.02]">
+              <Search className="absolute left-4 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" aria-hidden="true" />
+              <input
+                id="search-concursos"
+                type="text"
+                placeholder="Ex: SEDF, Novacap, TCDF..."
+                className="w-full h-14 pl-12 pr-4 rounded-full bg-card/80 backdrop-blur-md border-2 border-border/50 focus-ring shadow-lg text-lg transition-all"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Content Section */}
+      <section className="flex-1 w-full max-w-7xl mx-auto px-6 md:px-12 py-12">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-bold tracking-tight">Concursos Recentes</h2>
+          <span className="text-sm font-medium text-muted-foreground bg-secondary px-3 py-1 rounded-full">
+            {filteredConcursos?.length || 0} encontrados
+          </span>
         </div>
-      </main>
+
+        {isLoading && (
+          <div className="w-full h-64 flex flex-col items-center justify-center text-muted-foreground animate-fade-in">
+            <Loader2 className="w-10 h-10 animate-spin text-primary mb-4" />
+            <p className="font-medium">Carregando concursos...</p>
+          </div>
+        )}
+
+        {isError && (
+          <div className="w-full p-6 glass-darker border-red-500/20 bg-red-500/5 text-red-500 rounded-xl flex items-center animate-fade-in">
+            <AlertCircle className="w-6 h-6 mr-3 flex-shrink-0" />
+            <p className="font-medium">Erro ao carregar os dados. Verifique se o servidor backend está rodando na porta 8080.</p>
+          </div>
+        )}
+
+        {filteredConcursos && filteredConcursos.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
+            {filteredConcursos.map((concurso) => (
+              <ConcursoCard
+                key={concurso.id}
+                id={concurso.id}
+                titulo={concurso.titulo}
+                orgao={concurso.orgao.nome}
+                status={concurso.status}
+                dataProva={concurso.dataProva}
+                cargosCount={concurso.cargos?.length}
+              />
+            ))}
+          </div>
+        ) : (
+          !isLoading && !isError && (
+            <div className="w-full py-16 text-center text-muted-foreground glass rounded-xl animate-fade-in">
+              <p className="text-lg font-medium">Nenhum concurso encontrado com esse filtro.</p>
+            </div>
+          )
+        )}
+      </section>
     </div>
   );
 }

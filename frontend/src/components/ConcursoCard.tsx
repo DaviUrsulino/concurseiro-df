@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge } from "./Badge";
+import { Badge } from "./ui/Badge";
 import { Building2, Calendar, FileText } from "lucide-react";
 
 export interface ConcursoCardProps {

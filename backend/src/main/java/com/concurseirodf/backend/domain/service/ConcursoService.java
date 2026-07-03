@@ -2,11 +2,13 @@ package com.concurseirodf.backend.domain.service;
 
 import com.concurseirodf.backend.api.dto.*;
 import com.concurseirodf.backend.api.exception.ResourceNotFoundException;
+import com.concurseirodf.backend.domain.entity.Andamento;
 import com.concurseirodf.backend.domain.entity.Banca;
 import com.concurseirodf.backend.domain.entity.Cargo;
 import com.concurseirodf.backend.domain.entity.Concurso;
 import com.concurseirodf.backend.domain.entity.Orgao;
 import com.concurseirodf.backend.domain.enums.StatusConcurso;
+import com.concurseirodf.backend.domain.repository.AndamentoRepository;
 import com.concurseirodf.backend.domain.repository.CargoRepository;
 import com.concurseirodf.backend.domain.repository.ConcursoRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class ConcursoService {
 
     private final ConcursoRepository concursoRepository;
     private final CargoRepository cargoRepository;
+    private final AndamentoRepository andamentoRepository;
     private final OrgaoService orgaoService;
     private final BancaService bancaService;
 
@@ -83,6 +86,39 @@ public class ConcursoService {
     public Concurso getConcursoEntity(UUID id) {
         return concursoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Concurso não encontrado com id: " + id));
+    }
+
+    @Transactional
+    public AndamentoResponseDTO addAndamento(UUID concursoId, AndamentoRequestDTO dto) {
+        Concurso concurso = getConcursoEntity(concursoId);
+        
+        Andamento andamento = new Andamento();
+        andamento.setConcurso(concurso);
+        andamento.setTitulo(dto.titulo());
+        andamento.setDescricao(dto.descricao());
+        andamento.setLinkDocumento(dto.linkDocumento());
+        andamento.setDataPublicacao(dto.dataPublicacao());
+        if (dto.extraidoPorIa() != null) {
+            andamento.setExtraidoPorIa(dto.extraidoPorIa());
+        }
+
+        Andamento saved = andamentoRepository.save(andamento);
+        return new AndamentoResponseDTO(
+                saved.getId(), saved.getTitulo(), saved.getDescricao(),
+                saved.getLinkDocumento(), saved.getDataPublicacao(), saved.getExtraidoPorIa()
+        );
+    }
+
+    public List<AndamentoResponseDTO> getAndamentos(UUID concursoId) {
+        // Verifica se concurso existe
+        getConcursoEntity(concursoId);
+        
+        return andamentoRepository.findByConcursoId(concursoId).stream()
+                .map(a -> new AndamentoResponseDTO(
+                        a.getId(), a.getTitulo(), a.getDescricao(),
+                        a.getLinkDocumento(), a.getDataPublicacao(), a.getExtraidoPorIa()
+                ))
+                .collect(Collectors.toList());
     }
 
     private ConcursoResponseDTO mapToDTO(Concurso concurso, List<Cargo> cargos) {

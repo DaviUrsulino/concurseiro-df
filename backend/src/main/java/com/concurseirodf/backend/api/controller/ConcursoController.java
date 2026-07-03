@@ -1,5 +1,7 @@
 package com.concurseirodf.backend.api.controller;
 
+import com.concurseirodf.backend.api.dto.AndamentoRequestDTO;
+import com.concurseirodf.backend.api.dto.AndamentoResponseDTO;
 import com.concurseirodf.backend.api.dto.ConcursoRequestDTO;
 import com.concurseirodf.backend.api.dto.ConcursoResponseDTO;
 import com.concurseirodf.backend.domain.enums.StatusConcurso;
@@ -36,5 +38,17 @@ public class ConcursoController {
     @GetMapping("/{id}")
     public ResponseEntity<ConcursoResponseDTO> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(concursoService.findById(id));
+    }
+
+    @PostMapping("/{id}/andamentos")
+    public ResponseEntity<AndamentoResponseDTO> addAndamento(
+            @PathVariable UUID id, 
+            @RequestBody AndamentoRequestDTO request) {
+        return new ResponseEntity<>(concursoService.addAndamento(id, request), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/andamentos")
+    public ResponseEntity<List<AndamentoResponseDTO>> getAndamentos(@PathVariable UUID id) {
+        return ResponseEntity.ok(concursoService.getAndamentos(id));
     }
 }

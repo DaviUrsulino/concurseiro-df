@@ -16,9 +16,9 @@ public class EditalAiService {
     private final ChatClient chatClient;
     private final ObjectMapper objectMapper;
 
-    public EditalAiService(ChatClient.Builder chatClientBuilder, ObjectMapper objectMapper) {
+    public EditalAiService(ChatClient.Builder chatClientBuilder) {
         this.chatClient = chatClientBuilder.build();
-        this.objectMapper = objectMapper;
+        this.objectMapper = new ObjectMapper();
     }
 
     public List<DisciplinaRequestDTO> extrairDisciplinas(String trechoEdital) {

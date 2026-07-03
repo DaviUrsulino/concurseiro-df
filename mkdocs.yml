@@ -1,0 +1,37 @@
+site_name: Concurseiro DF
+site_description: Plataforma de inteligência de editais desenvolvida para centralizar, analisar e notificar estudantes sobre concursos.
+site_author: Davi Ursulino
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Mudar para modo escuro
+    - scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Mudar para modo claro
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+
+nav:
+  - Início: index.md
+  - Engenharia de Requisitos:
+    - Visão do Produto: requisitos/visao-produto.md
+    - Elicitação: requisitos/elicitacao.md
+    - Rastreabilidade: requisitos/rastreabilidade.md
+  - Arquitetura (Backend):
+    - Visão Geral: arquitetura/backend.md
+    - Banco de Dados: arquitetura/diagrama-banco.md
+  - Frontend e IHC:
+    - Guia de Acessibilidade: frontend/acessibilidade.md

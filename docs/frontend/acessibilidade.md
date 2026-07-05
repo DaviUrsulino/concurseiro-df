@@ -25,10 +25,10 @@ Muitos usuários navegam apenas usando a tecla `TAB`.
 ## Tabela de Verificação (Checklist Front-End)
 | Item | Descrição | Status |
 |---|---|---|
-| Contraste | Texto legível de acordo com o padrão AA. | A Fazer |
-| Foco do Teclado | Possível navegar apenas no TAB. Todos botões recebem `focus`. | A Fazer |
-| Zoom | O layout não quebra com 200% de Zoom no navegador. | A Fazer |
-| Alt Text | Imagens significativas têm atributo `alt`. | A Fazer |
-| Semântica | Uso de H1-H6 corretos. | A Fazer |
+| Contraste | Texto legível de acordo com o padrão AA. | Concluído |
+| Foco do Teclado | Possível navegar apenas no TAB. Todos botões recebem `focus`. | Concluído |
+| Zoom | O layout não quebra com 200% de Zoom no navegador. | Concluído |
+| Alt Text | Imagens significativas têm atributo `alt`. | Concluído |
+| Semântica | Uso de H1-H6 corretos. | Concluído |
 
 > Qualquer Pull Request envolvendo Frontend só será aprovado após ser checado contra esta lista.

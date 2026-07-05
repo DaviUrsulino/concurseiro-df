@@ -19,7 +19,7 @@ export default function AdminPanel() {
     setMessage("Iniciando extração e leitura por IA...");
 
     try {
-      const response = await api.post("/jobs/run", null, {
+      const response = await api.post("/jobs/scraper/start", null, {
         auth: {
           username: "admin",
           password: password

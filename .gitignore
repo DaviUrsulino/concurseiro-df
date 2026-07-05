@@ -16,3 +16,7 @@ Thumbs.db
 # Docker #
 .env
 jdk-21*/
+
+# Python / MkDocs
+.venv/
+site/

@@ -67,13 +67,13 @@ public class ConcursoService {
 
     public List<ConcursoResponseDTO> findAll() {
         return concursoRepository.findAll().stream()
-                .map(this::mapToDTOWithoutCargos)
+                .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())))
                 .collect(Collectors.toList());
     }
 
     public List<ConcursoResponseDTO> findByStatus(StatusConcurso status) {
         return concursoRepository.findByStatus(status).stream()
-                .map(this::mapToDTOWithoutCargos)
+                .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())))
                 .collect(Collectors.toList());
     }
 

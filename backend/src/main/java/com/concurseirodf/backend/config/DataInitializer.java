@@ -47,6 +47,7 @@ public class DataInitializer {
                 c1.setLinkPaginaOficial("https://www.cebraspe.org.br/concursos/tcdf_23");
                 c1.setOrgao(tcdf);
                 c1.setStatus(StatusConcurso.ABERTO);
+                c1.setDataProva(LocalDate.now().plusDays(45));
                 c1 = concursoRepository.save(c1);
 
                 Cargo cargo1 = new Cargo();
@@ -62,7 +63,7 @@ public class DataInitializer {
                 andamento1.setConcurso(c1);
                 andamento1.setTitulo("Edital de Abertura Publicado");
                 andamento1.setDescricao("O edital normativo nº 1 foi publicado no DODF, marcando o início das inscrições.");
-                andamento1.setLinkDocumento("http://dodf.df.gov.br/edital1.pdf");
+                andamento1.setLinkDocumento("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
                 andamento1.setDataPublicacao(LocalDate.now().minusDays(10));
                 andamento1.setExtraidoPorIa(true);
                 andamentoRepository.save(andamento1);
@@ -102,6 +103,7 @@ public class DataInitializer {
                 c3.setLinkPaginaOficial("https://www.ibades.org.br/");
                 c3.setOrgao(sedes);
                 c3.setStatus(StatusConcurso.ABERTO);
+                c3.setDataProva(LocalDate.now().plusDays(60));
                 c3 = concursoRepository.save(c3);
 
                 Cargo cargo3 = new Cargo();
@@ -124,13 +126,14 @@ public class DataInitializer {
                 c4.setLinkPaginaOficial("https://www.fgv.br/concursos");
                 c4.setOrgao(abgef);
                 c4.setStatus(StatusConcurso.EM_ANDAMENTO);
+                c4.setDataProva(LocalDate.now().minusDays(5));
                 c4 = concursoRepository.save(c4);
 
                 Andamento andamento4 = new Andamento();
                 andamento4.setConcurso(c4);
                 andamento4.setTitulo("Retificação do Cronograma");
                 andamento4.setDescricao("As datas das provas objetivas foram alteradas devido às fortes chuvas.");
-                andamento4.setLinkDocumento("http://dodf.df.gov.br/retificacao.pdf");
+                andamento4.setLinkDocumento("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
                 andamento4.setDataPublicacao(LocalDate.now().minusDays(2));
                 andamento4.setExtraidoPorIa(true);
                 andamentoRepository.save(andamento4);
@@ -147,6 +150,7 @@ public class DataInitializer {
                 c5.setLinkPaginaOficial("https://www.quadrix.org.br/");
                 c5.setOrgao(conter);
                 c5.setStatus(StatusConcurso.ABERTO);
+                c5.setDataProva(LocalDate.now().plusDays(90));
                 concursoRepository.save(c5);
 
                 // 6. EMBRATUR
@@ -175,6 +179,7 @@ public class DataInitializer {
             c7.setLinkPaginaOficial("https://www.fab.mil.br/concursos");
             c7.setOrgao(fab);
             c7.setStatus(StatusConcurso.ABERTO);
+            c7.setDataProva(LocalDate.now().plusDays(120));
             concursoRepository.save(c7);
         };
     }

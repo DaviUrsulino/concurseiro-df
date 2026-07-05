@@ -8,5 +8,6 @@ public record CargoRequestDTO(
     NivelCargo nivel,
     BigDecimal salario,
     Integer vagasImediatas,
-    Integer vagasCadastroReserva
+    Integer vagasCadastroReserva,
+    String conteudoProgramatico
 ) {}

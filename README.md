@@ -1,6 +1,7 @@
 # Concurseiro DF (v2.0)
 
 Plataforma de inteligência de editais para centralizar, analisar e notificar estudantes sobre oportunidades de concursos públicos no Distrito Federal.
+O sistema resolve o problema de fragmentação extraindo automaticamente o Conteúdo Programático dos editais através de IA e gerando **Guias de Estudo Inteligentes em PDF**.
 
 ## Arquitetura e Stack
 - **Backend:** Java 21, Spring Boot 3.4+, Spring AI, PostgreSQL, RabbitMQ

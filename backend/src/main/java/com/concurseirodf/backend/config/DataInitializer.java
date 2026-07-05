@@ -57,6 +57,7 @@ public class DataInitializer {
                 cargo1.setSalario(new BigDecimal("19235.88"));
                 cargo1.setVagasImediatas(23);
                 cargo1.setVagasCadastroReserva(50);
+                cargo1.setConteudoProgramatico("[{\"disciplina\":\"Língua Portuguesa\",\"topicos\":[\"Compreensão e interpretação de textos\",\"Ortografia oficial\",\"Sintaxe da oração e do período\"]},{\"disciplina\":\"Noções de Direito Constitucional\",\"topicos\":[\"Direitos e deveres fundamentais\",\"Organização do Estado\",\"Poder Judiciário\"]},{\"disciplina\":\"Conhecimentos Específicos\",\"topicos\":[\"Auditoria Governamental\",\"Controle Externo\",\"Administração Financeira e Orçamentária (AFO)\"]}]");
                 cargoRepository.save(cargo1);
 
                 Andamento andamento1 = new Andamento();
@@ -112,6 +113,7 @@ public class DataInitializer {
                 cargo3.setNivel(NivelCargo.SUPERIOR);
                 cargo3.setSalario(new BigDecimal("7000.00"));
                 cargo3.setVagasImediatas(100);
+                cargo3.setConteudoProgramatico("[{\"disciplina\":\"Língua Portuguesa\",\"topicos\":[\"Tipologia textual\",\"Pontuação\",\"Concordância nominal e verbal\"]},{\"disciplina\":\"Legislação Social\",\"topicos\":[\"Estatuto da Criança e do Adolescente (ECA)\",\"Estatuto do Idoso\",\"Lei Orgânica da Assistência Social (LOAS)\"]},{\"disciplina\":\"Conhecimentos Específicos\",\"topicos\":[\"Políticas Públicas de Assistência Social\",\"Trabalho com Famílias\",\"Elaboração de Laudos e Pareceres\"]}]");
                 cargoRepository.save(cargo3);
 
                 // 4. ABGEF (Mocked)

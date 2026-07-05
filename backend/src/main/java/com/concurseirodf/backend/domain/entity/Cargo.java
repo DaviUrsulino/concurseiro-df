@@ -41,4 +41,7 @@ public class Cargo {
 
     @Column(name = "vagas_cadastro_reserva")
     private Integer vagasCadastroReserva;
+
+    @Column(name = "conteudo_programatico", columnDefinition = "TEXT")
+    private String conteudoProgramatico;
 }

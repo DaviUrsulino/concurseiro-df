@@ -57,6 +57,7 @@ public class ConcursoService {
                 cargo.setSalario(cargoDto.salario());
                 cargo.setVagasImediatas(cargoDto.vagasImediatas());
                 cargo.setVagasCadastroReserva(cargoDto.vagasCadastroReserva());
+                cargo.setConteudoProgramatico(cargoDto.conteudoProgramatico());
                 return cargo;
             }).collect(Collectors.toList());
             cargoRepository.saveAll(cargos);
@@ -142,7 +143,8 @@ public class ConcursoService {
         if (cargos != null) {
             cargosDTO = cargos.stream().map(c -> new CargoResponseDTO(
                     c.getId(), c.getNome(), c.getNivel(), c.getSalario(),
-                    c.getVagasImediatas(), c.getVagasCadastroReserva()
+                    c.getVagasImediatas(), c.getVagasCadastroReserva(),
+                    c.getConteudoProgramatico()
             )).collect(Collectors.toList());
         }
 

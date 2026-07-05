@@ -4,7 +4,8 @@ import { use } from "react";
 import Link from "next/link";
 import { useConcursoById, useAndamentos } from "@/hooks/queries";
 import { Badge } from "@/components/ui/Badge";
-import { ArrowLeft, Building2, Globe, Calendar, Briefcase, FileText, Bot, Loader2, AlertCircle } from "lucide-react";
+import { ArrowLeft, Building2, Globe, Calendar, Briefcase, FileText, Bot, Loader2, AlertCircle, Download } from "lucide-react";
+import { generateStudyGuidePDF } from "@/lib/pdfGenerator";
 
 export default function ConcursoDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -98,6 +99,18 @@ export default function ConcursoDetails({ params }: { params: Promise<{ id: stri
                   </p>
                 )}
               </div>
+              
+              {cargo.conteudoProgramatico && (
+                <div className="mt-4 pt-4 border-t border-border">
+                  <button 
+                    onClick={() => generateStudyGuidePDF(concurso.titulo, concurso.orgao.nome, cargo.nome, cargo.conteudoProgramatico!)}
+                    className="w-full py-2 px-4 rounded-lg bg-primary/10 text-primary font-bold hover:bg-primary hover:text-primary-foreground transition-colors flex items-center justify-center gap-2 focus-ring"
+                  >
+                    <Download className="w-4 h-4" />
+                    Gerar Guia de Estudos (PDF)
+                  </button>
+                </div>
+              )}
             </article>
           ))}
           {(!concurso.cargos || concurso.cargos.length === 0) && (

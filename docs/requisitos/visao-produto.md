@@ -8,7 +8,7 @@ Para um estudante, descobrir quais tópicos exatos estudar para o cargo X ou Y e
 ## 2. Objetivos
 O **Concurseiro DF** visa resolver esse problema atuando como um agregador inteligente. Os principais objetivos do negócio são:
 - **Centralização:** Reunir informações de diferentes órgãos e bancas em uma única interface clara e padronizada.
-- **Inteligência e Estruturação:** Utilizar Inteligência Artificial para extrair automaticamente o "Conteúdo Programático" dos editais (em PDF ou HTML) e transformá-los em listas de disciplinas e tópicos estruturados.
+- **Inteligência e Estruturação:** Utilizar Inteligência Artificial para extrair automaticamente o "Conteúdo Programático" dos editais (em PDF ou HTML) e transformá-los em listas de disciplinas e tópicos estruturados, permitindo que o aluno **Gere Guias de Estudos Inteligentes em PDF** com apenas um clique. *(Status: Implementado)*
 - **Notificação e Acompanhamento:** Permitir que o usuário acompanhe o "Andamento" dos concursos (ex: "Saiu o gabarito", "Edital retificado") sem precisar entrar todo dia no site da banca.
 
 ## 3. Características do Produto

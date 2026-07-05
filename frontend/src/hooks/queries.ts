@@ -19,6 +19,7 @@ export interface Cargo {
   salario?: number;
   vagasImediatas?: number;
   vagasCadastroReserva?: number;
+  conteudoProgramatico?: string;
 }
 
 export interface Andamento {

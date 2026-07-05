@@ -1,8 +1,5 @@
 package com.concurseirodf.backend.domain.service;
 
-import com.concurseirodf.backend.api.dto.DisciplinaRequestDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
@@ -21,7 +18,7 @@ public class EditalAiService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public List<DisciplinaRequestDTO> extrairDisciplinas(String trechoEdital) {
+    public String extrairDisciplinas(String trechoEdital) {
         String systemPrompt = """
                 Você é um assistente especialista em concursos públicos do Brasil.
                 Sua tarefa é ler um trecho de edital fornecido pelo usuário e extrair as disciplinas e os tópicos cobrados.
@@ -46,10 +43,6 @@ public class EditalAiService {
             jsonResponse = jsonResponse.replace("```json", "").replace("```", "").trim();
         }
 
-        try {
-            return objectMapper.readValue(jsonResponse, new TypeReference<List<DisciplinaRequestDTO>>() {});
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Erro ao processar JSON da IA: " + e.getMessage(), e);
-        }
+        return jsonResponse;
     }
 }

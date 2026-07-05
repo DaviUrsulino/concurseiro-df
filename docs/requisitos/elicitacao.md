@@ -10,10 +10,11 @@ Os Requisitos Funcionais descrevem o que o sistema **deve fazer**.
 |---|---|---|
 | **RF01** | O sistema deve listar todos os concursos cadastrados, permitindo filtragem por *status* (Aberto, Previsto, Finalizado). | Alta |
 | **RF02** | O sistema deve exibir os detalhes de um concurso específico, incluindo Órgão, Banca, Data da Prova e Cargos disponíveis. | Alta |
-| **RF03** | O sistema deve apresentar as **Disciplinas** e **Tópicos** exigidos para cada Cargo específico de um concurso. | Alta |
-| **RF04** | O sistema deve possuir uma rotina (Scraper) capaz de coletar editais e andamentos automaticamente em fontes externas. | Média |
-| **RF05** | O sistema deve utilizar Inteligência Artificial para extrair as disciplinas de um texto bruto e cadastrá-las no banco de dados. | Média |
-| **RF06** | O sistema deve bloquear operações de escrita (criação, edição e exclusão) para usuários não autenticados como administradores. | Alta |
+| **RF03** | O sistema deve extrair e apresentar o **Conteúdo Programático** exigido para cada Cargo de um concurso. | Alta |
+| **RF04** | O sistema deve permitir que o estudante **Gere um Guia de Estudos em PDF** baseado na extração inteligente dos tópicos. | Alta |
+| **RF05** | O sistema deve possuir uma rotina (Scraper) capaz de coletar editais e andamentos automaticamente em fontes externas. | Média |
+| **RF06** | O sistema deve utilizar Inteligência Artificial para estruturar o conteúdo programático de um texto bruto. | Média |
+| **RF07** | O sistema deve bloquear operações de escrita (criação, edição e exclusão) para usuários não autenticados como administradores. | Alta |
 
 ## 2. Requisitos Não Funcionais (RNFs)
 
@@ -41,11 +42,11 @@ Abaixo estão estruturados os principais cenários de uso da aplicação.
   3. O sistema renderiza a lista na tela em formato de *cards*.
   4. O Estudante clica em um concurso para ver mais detalhes (Cargos e Salários).
 
-### UC02 - Extração de Disciplinas via IA
-- **Ator:** Sistema (Job em Background) ou Administrador
-- **Pré-condição:** Um edital ter sido coletado pelo Scraper.
+### UC02 - Geração de Guia de Estudos (PDF)
+- **Ator:** Estudante (Usuário Público)
+- **Pré-condição:** O concurso selecionado deve ter tido seu conteúdo extraído pela IA.
 - **Fluxo Principal:**
-  1. O Job envia o texto bruto do edital para o `EditalAiService`.
-  2. O serviço se comunica com a OpenAI utilizando um *System Prompt* restritivo.
-  3. A IA retorna os dados em formato JSON.
-  4. O sistema vincula as Disciplinas ao Cargo no banco de dados.
+  1. O Estudante acessa os detalhes de um concurso e navega até os Cargos.
+  2. O Estudante clica no botão "Gerar Guia de Estudos (PDF)".
+  3. O Frontend intercepta os dados estruturados do cargo e compila um PDF interativo (com checkboxes).
+  4. O documento é gerado no navegador e o download inicia instantaneamente.

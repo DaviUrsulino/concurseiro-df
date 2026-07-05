@@ -37,6 +37,7 @@ erDiagram
         Decimal salario
         Integer vagas_imediatas
         Integer vagas_cadastro_reserva
+        Text conteudo_programatico
     }
     Andamento {
         UUID id PK
@@ -47,24 +48,16 @@ erDiagram
         Date data_publicacao
         Boolean extraido_por_ia
     }
-    Disciplina {
-        UUID id PK
-        UUID cargo_id FK
-        String nome
-        JSONB topicos_json
-    }
 
     Orgao ||--o{ Concurso : realiza
     Banca ||--o{ Concurso : organiza
     Concurso ||--o{ Cargo : contem
     Concurso ||--o{ Andamento : possui
-    Cargo ||--o{ Disciplina : exige
 ```
 
 ## Dicionário de Dados
 - **Órgão:** A entidade governamental que contrata (Ex: SEDF, Polícia Civil).
 - **Banca:** A organizadora do certame (Ex: Cebraspe, FGV).
 - **Concurso:** O agrupador principal (O "Edital" em si).
-- **Cargo:** Específico dentro do concurso (Ex: Professor de Matemática, Agente).
+- **Cargo:** Específico dentro do concurso (Ex: Professor de Matemática, Agente). Possui o `conteudo_programatico` (Grade de disciplinas e tópicos extraídos pela IA).
 - **Andamento:** As atualizações que o Scraper capta (Gabarito, Retificações).
-- **Disciplina:** Conteúdo cobrado, extraído pela Inteligência Artificial.

@@ -64,7 +64,7 @@ public class DataInitializer {
                 andamento1.setConcurso(c1);
                 andamento1.setTitulo("Edital de Abertura Publicado");
                 andamento1.setDescricao("O edital normativo nº 1 foi publicado no DODF, marcando o início das inscrições.");
-                andamento1.setLinkDocumento("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+                andamento1.setLinkDocumento("https://www.gov.br/gestao/pt-br/concurso-publico-nacional-unificado/editais/retificados/bloco-8-edital-cnu-retificado-4-de-julho.pdf");
                 andamento1.setDataPublicacao(LocalDate.now().minusDays(10));
                 andamento1.setExtraidoPorIa(true);
                 andamentoRepository.save(andamento1);
@@ -135,7 +135,7 @@ public class DataInitializer {
                 andamento4.setConcurso(c4);
                 andamento4.setTitulo("Retificação do Cronograma");
                 andamento4.setDescricao("As datas das provas objetivas foram alteradas devido às fortes chuvas.");
-                andamento4.setLinkDocumento("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+                andamento4.setLinkDocumento("https://www.gov.br/gestao/pt-br/concurso-publico-nacional-unificado/editais/retificados/bloco-8-edital-cnu-retificado-4-de-julho.pdf");
                 andamento4.setDataPublicacao(LocalDate.now().minusDays(2));
                 andamento4.setExtraidoPorIa(true);
                 andamentoRepository.save(andamento4);

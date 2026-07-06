@@ -28,6 +28,13 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error('API Error:', error.response?.data || error.message);
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('@ConcurseiroDF:token');
+        localStorage.removeItem('@ConcurseiroDF:user');
+        window.location.href = '/login';
+      }
+    }
     return Promise.reject(error);
   }
 );

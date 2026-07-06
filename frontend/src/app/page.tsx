@@ -137,8 +137,23 @@ export default function Home() {
           </div>
         ) : (
           (activeTab === "todos" || user) && !currentLoading && !currentError && (
-            <div className="w-full py-16 text-center text-muted-foreground glass rounded-xl animate-fade-in">
-              <p className="text-lg font-medium">Nenhum concurso encontrado com esse filtro.</p>
+            <div className="w-full py-16 text-center text-muted-foreground glass rounded-xl animate-fade-in flex flex-col items-center justify-center">
+              {activeTab === "recomendados" ? (
+                <>
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                    <Search className="w-8 h-8 text-primary opacity-80" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-2">Nenhum match perfeito encontrado</h3>
+                  <p className="text-lg mb-6 max-w-lg">
+                    Infelizmente nenhum concurso atende exatamente ao seu nível de escolaridade e pretensão salarial neste momento.
+                  </p>
+                  <p className="text-sm">
+                    Tente explorar a aba <strong className="text-primary font-semibold">Todos os Concursos</strong> para outras oportunidades.
+                  </p>
+                </>
+              ) : (
+                <p className="text-lg font-medium">Nenhum concurso encontrado com esse filtro.</p>
+              )}
             </div>
           )
         )}

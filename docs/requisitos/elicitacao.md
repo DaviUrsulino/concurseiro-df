@@ -15,6 +15,9 @@ Os Requisitos Funcionais descrevem o que o sistema **deve fazer**.
 | **RF05** | O sistema deve possuir uma rotina (Scraper) capaz de coletar editais e andamentos automaticamente em fontes externas. | Média |
 | **RF06** | O sistema deve utilizar Inteligência Artificial para estruturar o conteúdo programático de um texto bruto. | Média |
 | **RF07** | O sistema deve bloquear operações de escrita (criação, edição e exclusão) para usuários não autenticados como administradores. | Alta |
+| **RF08** | O sistema deve possuir um sistema de Autenticação com JWT, permitindo Cadastro e Login de estudantes. | Alta |
+| **RF09** | O sistema deve fornecer um Smart Matcher, indicando concursos compatíveis com o perfil do estudante (pretensão salarial e escolaridade). | Alta |
+| **RF10** | O sistema deve fornecer um Dashboard de Estudos Interativo, permitindo acompanhar o progresso (tópicos concluídos) por edital. | Alta |
 
 ## 2. Requisitos Não Funcionais (RNFs)
 

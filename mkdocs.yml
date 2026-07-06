@@ -36,6 +36,7 @@ nav:
   - Engenharia de Requisitos:
     - Visão do Produto: requisitos/visao-produto.md
     - Elicitação: requisitos/elicitacao.md
+    - Status de Implementação: requisitos/status-rfs.md
     - Rastreabilidade: requisitos/rastreabilidade.md
   - Arquitetura (Backend):
     - Visão Geral: arquitetura/backend.md

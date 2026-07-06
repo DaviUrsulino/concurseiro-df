@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
 
@@ -69,6 +70,31 @@ export function useRecomendados() {
     queryFn: async () => {
       const { data } = await api.get<Concurso[]>('/concursos/recomendados');
       return data;
+    },
+  });
+}
+
+export function useProgresso(cargoId: string) {
+  return useQuery({
+    queryKey: ['progresso', cargoId],
+    queryFn: async () => {
+      const { data } = await api.get<{ topicosConcluidos: string[] }>(`/progresso/cargo/${cargoId}`);
+      return data.topicosConcluidos;
+    },
+    enabled: !!cargoId,
+  });
+}
+
+
+export function useUpdateProgresso() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ cargoId, topicosConcluidos }: { cargoId: string; topicosConcluidos: string[] }) => {
+      const { data } = await api.put<{ topicosConcluidos: string[] }>(`/progresso/cargo/${cargoId}`, { topicosConcluidos });
+      return data.topicosConcluidos;
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['progresso', variables.cargoId] });
     },
   });
 }

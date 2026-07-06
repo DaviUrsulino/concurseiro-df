@@ -102,13 +102,13 @@ export default function ConcursoDetails({ params }: { params: Promise<{ id: stri
               
               {cargo.conteudoProgramatico && (
                 <div className="mt-4 pt-4 border-t border-border">
-                  <button 
-                    onClick={() => generateStudyGuidePDF(concurso.titulo, concurso.orgao.nome, cargo.nome, cargo.conteudoProgramatico!)}
+                  <Link 
+                    href={`/concurso/${concurso.id}/estudar/${cargo.id}`}
                     className="w-full py-2 px-4 rounded-lg bg-primary/10 text-primary font-bold hover:bg-primary hover:text-primary-foreground transition-colors flex items-center justify-center gap-2 focus-ring"
                   >
-                    <Download className="w-4 h-4" />
-                    Gerar Guia de Estudos (PDF)
-                  </button>
+                    <Briefcase className="w-4 h-4" />
+                    Acessar Dashboard de Estudos
+                  </Link>
                 </div>
               )}
             </article>
@@ -160,7 +160,7 @@ export default function ConcursoDetails({ params }: { params: Promise<{ id: stri
                       </a>
                     )}
                     {andamento.extraidoPorIa && (
-                      <Badge variant="default" className="gap-1 bg-accent/10 text-accent dark:text-accent-foreground border border-accent/20">
+                      <Badge variant="default" className="gap-1 bg-blue-100 text-blue-800 border border-blue-200 dark:bg-blue-900/50 dark:text-blue-100 hover:bg-blue-200">
                         <Bot className="w-3 h-3" />
                         Lido por IA
                       </Badge>

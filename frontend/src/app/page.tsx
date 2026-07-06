@@ -1,15 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { useConcursos } from "@/hooks/queries";
+import { useConcursos, useRecomendados } from "@/hooks/queries";
 import { ConcursoCard } from "@/components/ConcursoCard";
-import { Search, Loader2, AlertCircle } from "lucide-react";
+import { Search, Loader2, AlertCircle, Sparkles, LayoutList } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
 
 export default function Home() {
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState<"todos" | "recomendados">("todos");
   const { data: concursos, isLoading, isError } = useConcursos();
+  const { data: recomendados, isLoading: isLoadingRec, isError: isErrorRec } = useRecomendados();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredConcursos = concursos?.filter((c) =>
+  const currentData = activeTab === "todos" ? concursos : recomendados;
+  const currentLoading = activeTab === "todos" ? isLoading : isLoadingRec;
+  const currentError = activeTab === "todos" ? isError : isErrorRec;
+
+  const filteredConcursos = currentData?.filter((c) =>
     c.titulo.toLowerCase().includes(searchTerm.toLowerCase()) ||
     c.orgao.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -54,28 +63,65 @@ export default function Home() {
 
       {/* Content Section */}
       <section className="flex-1 w-full max-w-7xl mx-auto px-6 md:px-12 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold tracking-tight">Concursos Recentes</h2>
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+          <div className="flex bg-card p-1 rounded-xl shadow-sm border border-border/50">
+            <button
+              onClick={() => setActiveTab("todos")}
+              className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === "todos"
+                  ? "bg-primary text-white shadow-md"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              }`}
+            >
+              <LayoutList className="w-4 h-4 mr-2" />
+              Todos os Concursos
+            </button>
+            <button
+              onClick={() => setActiveTab("recomendados")}
+              className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === "recomendados"
+                  ? "bg-primary text-white shadow-md"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+              }`}
+            >
+              <Sparkles className="w-4 h-4 mr-2" />
+              Smart Matcher
+            </button>
+          </div>
+          
           <span className="text-sm font-medium text-muted-foreground bg-secondary px-3 py-1 rounded-full">
             {filteredConcursos?.length || 0} encontrados
           </span>
         </div>
 
-        {isLoading && (
+        {activeTab === "recomendados" && !user && (
+          <div className="w-full py-16 flex flex-col items-center text-center glass rounded-xl animate-fade-in border border-primary/20 bg-primary/5">
+            <Sparkles className="w-12 h-12 text-primary mb-4" />
+            <h3 className="text-xl font-bold mb-2 text-foreground">Faça login para ver seus Matches</h3>
+            <p className="text-muted-foreground max-w-md mb-6">
+              O Smart Matcher analisa seu nível de escolaridade e pretensão salarial para encontrar os concursos ideais para você.
+            </p>
+            <Link href="/login" className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium shadow-md transition-all hover:scale-105">
+              Fazer Login
+            </Link>
+          </div>
+        )}
+
+        {(activeTab === "todos" || user) && currentLoading && (
           <div className="w-full h-64 flex flex-col items-center justify-center text-muted-foreground animate-fade-in">
             <Loader2 className="w-10 h-10 animate-spin text-primary mb-4" />
             <p className="font-medium">Carregando concursos...</p>
           </div>
         )}
 
-        {isError && (
+        {(activeTab === "todos" || user) && currentError && (
           <div className="w-full p-6 glass-darker border-red-500/20 bg-red-500/5 text-red-500 rounded-xl flex items-center animate-fade-in">
             <AlertCircle className="w-6 h-6 mr-3 flex-shrink-0" />
             <p className="font-medium">Erro ao carregar os dados. Verifique se o servidor backend está rodando na porta 8080.</p>
           </div>
         )}
 
-        {filteredConcursos && filteredConcursos.length > 0 ? (
+        {(activeTab === "todos" || user) && filteredConcursos && filteredConcursos.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
             {filteredConcursos.map((concurso) => (
               <ConcursoCard
@@ -90,7 +136,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          !isLoading && !isError && (
+          (activeTab === "todos" || user) && !currentLoading && !currentError && (
             <div className="w-full py-16 text-center text-muted-foreground glass rounded-xl animate-fade-in">
               <p className="text-lg font-medium">Nenhum concurso encontrado com esse filtro.</p>
             </div>

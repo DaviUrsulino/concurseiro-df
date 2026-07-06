@@ -7,6 +7,7 @@ import com.concurseirodf.backend.domain.entity.Banca;
 import com.concurseirodf.backend.domain.entity.Cargo;
 import com.concurseirodf.backend.domain.entity.Concurso;
 import com.concurseirodf.backend.domain.entity.Orgao;
+import com.concurseirodf.backend.domain.entity.Usuario;
 import com.concurseirodf.backend.domain.enums.StatusConcurso;
 import com.concurseirodf.backend.domain.repository.AndamentoRepository;
 import com.concurseirodf.backend.domain.repository.CargoRepository;
@@ -75,6 +76,16 @@ public class ConcursoService {
     public List<ConcursoResponseDTO> findByStatus(StatusConcurso status) {
         return concursoRepository.findByStatus(status).stream()
                 .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())))
+                .collect(Collectors.toList());
+    }
+
+    public List<ConcursoResponseDTO> findRecomendados(Usuario usuario) {
+        return concursoRepository.findAll().stream()
+                .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())))
+                .filter(c -> c.cargos() != null && c.cargos().stream().anyMatch(cargo -> 
+                    (usuario.getPretensaoSalarial() == null || cargo.salario().compareTo(usuario.getPretensaoSalarial()) >= 0) &&
+                    (usuario.getNivelEscolaridade() == null || cargo.nivel().name().equalsIgnoreCase(usuario.getNivelEscolaridade()))
+                ))
                 .collect(Collectors.toList());
     }
 

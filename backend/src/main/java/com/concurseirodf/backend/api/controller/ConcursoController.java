@@ -1,14 +1,15 @@
 package com.concurseirodf.backend.api.controller;
-
 import com.concurseirodf.backend.api.dto.AndamentoRequestDTO;
 import com.concurseirodf.backend.api.dto.AndamentoResponseDTO;
 import com.concurseirodf.backend.api.dto.ConcursoRequestDTO;
 import com.concurseirodf.backend.api.dto.ConcursoResponseDTO;
+import com.concurseirodf.backend.domain.entity.Usuario;
 import com.concurseirodf.backend.domain.enums.StatusConcurso;
 import com.concurseirodf.backend.domain.service.ConcursoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
@@ -34,6 +35,11 @@ public class ConcursoController {
             return ResponseEntity.ok(concursoService.findByStatus(status));
         }
         return ResponseEntity.ok(concursoService.findAll());
+    }
+
+    @GetMapping("/recomendados")
+    public ResponseEntity<List<ConcursoResponseDTO>> findRecomendados(@AuthenticationPrincipal Usuario usuario) {
+        return ResponseEntity.ok(concursoService.findRecomendados(usuario));
     }
 
     @GetMapping("/{id}")

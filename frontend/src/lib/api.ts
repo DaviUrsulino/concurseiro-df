@@ -8,7 +8,21 @@ export const api = axios.create({
   // Habilita envio de cookies/credenciais se o backend estiver rodando
   withCredentials: true,
 });
-
+// Request interceptor to attach JWT token
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('@ConcurseiroDF:token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 // Interceptor genérico para tratar erros globais (opcional)
 api.interceptors.response.use(
   (response) => response,

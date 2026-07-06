@@ -62,3 +62,13 @@ export function useAndamentos(concursoId: string) {
     enabled: !!concursoId,
   });
 }
+
+export function useRecomendados() {
+  return useQuery({
+    queryKey: ['recomendados'],
+    queryFn: async () => {
+      const { data } = await api.get<Concurso[]>('/concursos/recomendados');
+      return data;
+    },
+  });
+}

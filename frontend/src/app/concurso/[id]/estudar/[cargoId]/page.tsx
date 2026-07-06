@@ -56,7 +56,7 @@ export default function DashboardEstudante({ params }: { params: Promise<{ id: s
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-foreground">
-              Dashboard de Estudos
+              Jornada de Estudos
             </h1>
             <p className="text-xl text-muted-foreground font-medium flex items-center gap-2">
               <BookOpen className="w-5 h-5 text-primary" />

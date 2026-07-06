@@ -43,3 +43,4 @@ nav:
     - Banco de Dados: arquitetura/diagrama-banco.md
   - Frontend e IHC:
     - Guia de Acessibilidade: frontend/acessibilidade.md
+  - Qualidade e Testes: testes.md

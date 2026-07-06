@@ -4,7 +4,7 @@ import { use } from "react";
 import Link from "next/link";
 import { useConcursoById, useAndamentos } from "@/hooks/queries";
 import { Badge } from "@/components/ui/Badge";
-import { ArrowLeft, Building2, Globe, Calendar, Briefcase, FileText, Bot, Loader2, AlertCircle, Download } from "lucide-react";
+import { ArrowLeft, Building2, Globe, Calendar, Briefcase, FileText, Bot, Loader2, AlertCircle, Download, BookOpen } from "lucide-react";
 import { generateStudyGuidePDF } from "@/lib/pdfGenerator";
 
 export default function ConcursoDetails({ params }: { params: Promise<{ id: string }> }) {
@@ -102,12 +102,11 @@ export default function ConcursoDetails({ params }: { params: Promise<{ id: stri
               
               {cargo.conteudoProgramatico && (
                 <div className="mt-4 pt-4 border-t border-border">
-                  <Link 
-                    href={`/concurso/${concurso.id}/estudar/${cargo.id}`}
-                    className="w-full py-2 px-4 rounded-lg bg-primary/10 text-primary font-bold hover:bg-primary hover:text-primary-foreground transition-colors flex items-center justify-center gap-2 focus-ring"
-                  >
-                    <Briefcase className="w-4 h-4" />
-                    Acessar Dashboard de Estudos
+                  <Link href={`/concurso/${concurso.id}/estudar/${cargo.id}`}>
+                    <button className="mt-4 w-full bg-primary/10 text-primary hover:bg-primary hover:text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center justify-center">
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      Acessar Jornada de Estudos
+                    </button>
                   </Link>
                 </div>
               )}

@@ -36,6 +36,7 @@ export default function CadastroPage() {
         pretensaoSalarial: parseFloat(formData.pretensaoSalarial) || 0
       });
       login(response.data);
+      alert("Cadastro concluído com sucesso! 🎉\n\nUm E-mail de Boas Vindas foi disparado. Como estamos em modo local, o e-mail foi salvo em um arquivo na pasta 'backend/emails_simulados' no seu VS Code. Vá lá conferir o layout!");
       router.push('/');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Erro ao criar conta. Tente novamente.');

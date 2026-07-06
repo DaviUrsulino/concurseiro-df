@@ -64,7 +64,7 @@ public class ScraperJobConfig {
             log.info("Processando link: {}", link);
             // Aqui conectaríamos no site real com Jsoup.connect(link).get();
             // Para fim de arquitetura, vamos simular o HTML retornado
-            String mockHtml = "<html><body><h1>Concurso TCDF " + System.currentTimeMillis() + "</h1><a href='https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'>Edital de Abertura</a></body></html>";
+            String mockHtml = "<html><body><h1>Concurso TCDF " + System.currentTimeMillis() + "</h1><a href='https://www.gov.br/mgi/pt-br/concurso-nacional-unificado/editais/bloco-1-infraestrutura-exatas-e-engenharia.pdf'>Edital de Abertura</a></body></html>";
             Document doc = Jsoup.parse(mockHtml);
             
             String tituloHtml = doc.select("h1").text();

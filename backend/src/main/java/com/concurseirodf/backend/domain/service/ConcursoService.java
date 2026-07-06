@@ -80,12 +80,24 @@ public class ConcursoService {
     }
 
     public List<ConcursoResponseDTO> findRecomendados(Usuario usuario) {
+        String userNivel = usuario.getNivelEscolaridade() != null ? 
+            usuario.getNivelEscolaridade().toLowerCase()
+                .replace("é", "e").replace("ensino", "").trim() : "";
+                
         return concursoRepository.findAll().stream()
                 .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())))
-                .filter(c -> c.cargos() != null && c.cargos().stream().anyMatch(cargo -> 
-                    (usuario.getPretensaoSalarial() == null || cargo.salario().compareTo(usuario.getPretensaoSalarial()) >= 0) &&
-                    (usuario.getNivelEscolaridade() == null || cargo.nivel().name().equalsIgnoreCase(usuario.getNivelEscolaridade()))
-                ))
+                .filter(c -> c.cargos() != null && c.cargos().stream().anyMatch(cargo -> {
+                    // Match flexível para salário (aceita se pagar pelo menos 60% da pretensão)
+                    boolean matchSalario = usuario.getPretensaoSalarial() == null || 
+                        cargo.salario() == null ||
+                        cargo.salario().compareTo(usuario.getPretensaoSalarial().multiply(new java.math.BigDecimal("0.6"))) >= 0;
+                    
+                    // Match flexível para escolaridade (ignora acentos e palavras como 'ensino')
+                    String cargoNivel = cargo.nivel() != null ? cargo.nivel().name().toLowerCase() : "";
+                    boolean matchNivel = userNivel.isEmpty() || cargoNivel.contains(userNivel) || userNivel.contains(cargoNivel);
+                    
+                    return matchSalario && matchNivel;
+                }))
                 .collect(Collectors.toList());
     }
 

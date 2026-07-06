@@ -4,7 +4,7 @@ SET link_documento = 'https://www.gov.br/mgi/pt-br/concurso-nacional-unificado/e
 WHERE titulo = 'Edital de Abertura' OR link_documento LIKE '%w3.org%';
 
 -- Adiciona andamento simulado para o concurso SEDES caso não possua
-INSERT INTO tb_andamento (id, data, titulo, link_documento, concurso_id, extraido_por_ia)
+INSERT INTO tb_andamento (id, data_publicacao, titulo, link_documento, concurso_id, extraido_por_ia)
 SELECT gen_random_uuid(), CURRENT_DATE, 'Edital de Abertura Publicado', 'https://www.gov.br/mgi/pt-br/concurso-nacional-unificado/editais/bloco-1-infraestrutura-exatas-e-engenharia.pdf', id, true
 FROM tb_concurso WHERE titulo LIKE '%SEDES%'
 AND NOT EXISTS (

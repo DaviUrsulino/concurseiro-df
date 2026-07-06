@@ -145,7 +145,7 @@ export default function ConcursoDetails({ params }: { params: Promise<{ id: stri
                     </span>
                   </div>
                   
-                  {andamento.descricao && <p className="text-muted-foreground text-sm mb-4">{andamento.descricao}</p>}
+                  {andamento.descricao && <p className="text-muted-foreground text-sm mb-4 whitespace-pre-wrap leading-relaxed">{andamento.descricao}</p>}
                   
                   <div className="flex items-center gap-4">
                     {andamento.linkDocumento && (

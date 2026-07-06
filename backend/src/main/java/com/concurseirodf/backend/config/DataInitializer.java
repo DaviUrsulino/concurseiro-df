@@ -63,7 +63,16 @@ public class DataInitializer {
                 Andamento andamento1 = new Andamento();
                 andamento1.setConcurso(c1);
                 andamento1.setTitulo("Edital de Abertura Publicado");
-                andamento1.setDescricao("O edital normativo nº 1 foi publicado no DODF, marcando o início das inscrições.");
+                andamento1.setDescricao(
+                    "✨ **Resumo Inteligente do Edital (Extraído por IA):**\n\n" +
+                    "• **Vagas:** 23 vagas imediatas + 50 para Cadastro de Reserva.\n" +
+                    "• **Remuneração:** Inicial de R$ 19.235,88.\n" +
+                    "• **Requisitos Básicos:** Diploma de nível superior em qualquer área de formação.\n" +
+                    "• **Fases do Concurso:**\n" +
+                    "  1. Prova Objetiva (Conhecimentos Básicos e Específicos)\n" +
+                    "  2. Prova Discursiva (Redação de peça técnica e questões)\n" +
+                    "• **Dica da IA:** A banca (Cebraspe) costuma focar pesado em Administração Financeira e Orçamentária e Controle Externo. Reforce a leitura da Lei Orgânica do TCDF!"
+                );
                 andamento1.setLinkDocumento("https://www.gov.br/gestao/pt-br/concurso-publico-nacional-unificado/editais/retificados/bloco-8-edital-cnu-retificado-4-de-julho.pdf");
                 andamento1.setDataPublicacao(LocalDate.now().minusDays(10));
                 andamento1.setExtraidoPorIa(true);
@@ -134,7 +143,14 @@ public class DataInitializer {
                 Andamento andamento4 = new Andamento();
                 andamento4.setConcurso(c4);
                 andamento4.setTitulo("Retificação do Cronograma");
-                andamento4.setDescricao("As datas das provas objetivas foram alteradas devido às fortes chuvas.");
+                andamento4.setDescricao(
+                    "✨ **Resumo Inteligente da Retificação (Extraído por IA):**\n\n" +
+                    "• **O que mudou?** As datas das provas objetivas e discursivas foram alteradas.\n" +
+                    "• **Motivo:** Fortes chuvas na região de aplicação.\n" +
+                    "• **Nova Data da Prova:** O exame agora será realizado no 2º domingo do próximo mês.\n" +
+                    "• **O que fazer?** Re-imprima o seu Cartão de Confirmação de Inscrição na área do candidato.\n" +
+                    "• **Dica da IA:** Aproveite essas semanas extras para focar nos tópicos de maior peso (Língua Portuguesa e Conhecimentos Específicos)."
+                );
                 andamento4.setLinkDocumento("https://www.gov.br/gestao/pt-br/concurso-publico-nacional-unificado/editais/retificados/bloco-8-edital-cnu-retificado-4-de-julho.pdf");
                 andamento4.setDataPublicacao(LocalDate.now().minusDays(2));
                 andamento4.setExtraidoPorIa(true);

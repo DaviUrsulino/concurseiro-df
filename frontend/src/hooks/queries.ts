@@ -32,11 +32,19 @@ export interface Andamento {
   extraidoPorIa?: boolean;
 }
 
-export function useConcursos() {
+export interface PageResponse<T> {
+  content: T[];
+  totalPages: number;
+  totalElements: number;
+  number: number; // current page
+  size: number;
+}
+
+export function useConcursos(page: number = 0, size: number = 9) {
   return useQuery({
-    queryKey: ['concursos'],
+    queryKey: ['concursos', page, size],
     queryFn: async () => {
-      const { data } = await api.get<Concurso[]>('/concursos');
+      const { data } = await api.get<PageResponse<Concurso>>(`/concursos?page=${page}&size=${size}`);
       return data;
     },
   });

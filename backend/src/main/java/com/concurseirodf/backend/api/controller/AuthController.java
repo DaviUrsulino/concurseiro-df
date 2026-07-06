@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationService service;
+    private final com.concurseirodf.backend.domain.service.PasswordResetService passwordResetService;
 
     @PostMapping("/registrar")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
@@ -26,5 +27,21 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> forgotPassword(@RequestBody com.concurseirodf.backend.domain.dto.ForgotPasswordRequest request) {
+        passwordResetService.createPasswordResetTokenForUser(request.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody com.concurseirodf.backend.domain.dto.ResetPasswordRequest request) {
+        boolean result = passwordResetService.resetPassword(request.getToken(), request.getNewPassword());
+        if (result) {
+            return ResponseEntity.ok("Senha redefinida com sucesso.");
+        } else {
+            return ResponseEntity.badRequest().body("Token inválido ou expirado.");
+        }
     }
 }

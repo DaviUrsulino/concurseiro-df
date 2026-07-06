@@ -67,16 +67,14 @@ public class ConcursoService {
         return mapToDTO(savedConcurso, cargos);
     }
 
-    public List<ConcursoResponseDTO> findAll() {
-        return concursoRepository.findAll().stream()
-                .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())))
-                .collect(Collectors.toList());
+    public org.springframework.data.domain.Page<ConcursoResponseDTO> findAll(org.springframework.data.domain.Pageable pageable) {
+        return concursoRepository.findAll(pageable)
+                .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())));
     }
 
-    public List<ConcursoResponseDTO> findByStatus(StatusConcurso status) {
-        return concursoRepository.findByStatus(status).stream()
-                .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())))
-                .collect(Collectors.toList());
+    public org.springframework.data.domain.Page<ConcursoResponseDTO> findByStatus(StatusConcurso status, org.springframework.data.domain.Pageable pageable) {
+        return concursoRepository.findByStatus(status, pageable)
+                .map(c -> mapToDTO(c, cargoRepository.findByConcursoId(c.getId())));
     }
 
     public List<ConcursoResponseDTO> findRecomendados(Usuario usuario) {

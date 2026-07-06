@@ -6,12 +6,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
 import Link from 'next/link';
 import { BookOpen, ArrowRight, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   
   const router = useRouter();
   const { login } = useAuth();
@@ -19,29 +19,29 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
     
     try {
       const response = await api.post('/auth/login', { email, senha });
       login(response.data);
+      toast.success('Login realizado com sucesso!');
       router.push('/'); // Ou para o dashboard
     } catch (err: any) {
-      setError(err.response?.data?.message || 'E-mail ou senha incorretos.');
+      toast.error(err.response?.data?.message || 'E-mail ou senha incorretos.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center text-primary">
           <BookOpen className="h-12 w-12" />
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
           Entrar na sua conta
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-muted-foreground">
           Ou{' '}
           <Link href="/cadastro" className="font-medium text-primary hover:text-primary/80 transition-colors underline decoration-primary/30 underline-offset-4">
             crie uma conta gratuitamente
@@ -50,17 +50,8 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-xl sm:px-10 border border-gray-100">
+        <div className="bg-card py-8 px-4 shadow-xl sm:rounded-xl sm:px-10 border border-border/50">
           <form className="space-y-6" onSubmit={handleLogin}>
-            {error && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
-                <div className="flex">
-                  <div className="ml-3">
-                    <p className="text-sm text-red-700">{error}</p>
-                  </div>
-                </div>
-              </div>
-            )}
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">

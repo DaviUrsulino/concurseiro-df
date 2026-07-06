@@ -10,11 +10,14 @@ import Link from "next/link";
 export default function Home() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<"todos" | "recomendados">("todos");
-  const { data: concursos, isLoading, isError } = useConcursos();
+  const [page, setPage] = useState(0);
+  const pageSize = 9;
+
+  const { data: concursosPage, isLoading, isError } = useConcursos(page, pageSize);
   const { data: recomendados, isLoading: isLoadingRec, isError: isErrorRec } = useRecomendados();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const currentData = activeTab === "todos" ? concursos : recomendados;
+  const currentData = activeTab === "todos" ? concursosPage?.content : recomendados;
   const currentLoading = activeTab === "todos" ? isLoading : isLoadingRec;
   const currentError = activeTab === "todos" ? isError : isErrorRec;
 
@@ -66,7 +69,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
           <div className="flex bg-card p-1 rounded-xl shadow-sm border border-border/50">
             <button
-              onClick={() => setActiveTab("todos")}
+              onClick={() => { setActiveTab("todos"); setPage(0); }}
               className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeTab === "todos"
                   ? "bg-primary text-white shadow-md"
@@ -90,7 +93,7 @@ export default function Home() {
           </div>
           
           <span className="text-sm font-medium text-muted-foreground bg-secondary px-3 py-1 rounded-full">
-            {filteredConcursos?.length || 0} encontrados
+            {activeTab === "todos" && concursosPage ? concursosPage.totalElements : (filteredConcursos?.length || 0)} encontrados
           </span>
         </div>
 
@@ -108,33 +111,69 @@ export default function Home() {
         )}
 
         {(activeTab === "todos" || user) && currentLoading && (
-          <div className="w-full h-64 flex flex-col items-center justify-center text-muted-foreground animate-fade-in">
-            <Loader2 className="w-10 h-10 animate-spin text-primary mb-4" />
-            <p className="font-medium">Carregando concursos...</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse mb-8">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="bg-card rounded-xl p-6 border border-border/50 shadow-sm h-48 flex flex-col justify-between">
+                <div>
+                  <div className="h-6 bg-muted rounded w-3/4 mb-4"></div>
+                  <div className="h-4 bg-muted rounded w-1/2 mb-2"></div>
+                  <div className="h-4 bg-muted rounded w-1/3"></div>
+                </div>
+                <div className="flex justify-between items-center mt-6 pt-4 border-t border-border/50">
+                  <div className="h-8 bg-muted rounded w-24"></div>
+                  <div className="h-8 bg-muted rounded w-24"></div>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
         {(activeTab === "todos" || user) && currentError && (
           <div className="w-full p-6 glass-darker border-red-500/20 bg-red-500/5 text-red-500 rounded-xl flex items-center animate-fade-in">
             <AlertCircle className="w-6 h-6 mr-3 flex-shrink-0" />
-            <p className="font-medium">Erro ao carregar os dados. Verifique se o servidor backend está rodando na porta 8080.</p>
+            <p className="font-medium">Erro ao carregar os dados. Verifique se o servidor backend está rodando.</p>
           </div>
         )}
 
         {(activeTab === "todos" || user) && filteredConcursos && filteredConcursos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
-            {filteredConcursos.map((concurso) => (
-              <ConcursoCard
-                key={concurso.id}
-                id={concurso.id}
-                titulo={concurso.titulo}
-                orgao={concurso.orgao.nome}
-                status={concurso.status}
-                dataProva={concurso.dataProva}
-                cargosCount={concurso.cargos?.length}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up mb-8">
+              {filteredConcursos.map((concurso) => (
+                <ConcursoCard
+                  key={concurso.id}
+                  id={concurso.id}
+                  titulo={concurso.titulo}
+                  orgao={concurso.orgao.nome}
+                  status={concurso.status}
+                  dataProva={concurso.dataProva}
+                  cargosCount={concurso.cargos?.length}
+                />
+              ))}
+            </div>
+            
+            {/* Pagination Controls */}
+            {activeTab === "todos" && concursosPage && concursosPage.totalPages > 1 && (
+              <div className="flex justify-center items-center gap-4 mt-8">
+                <button
+                  onClick={() => setPage((p) => Math.max(0, p - 1))}
+                  disabled={page === 0}
+                  className="px-4 py-2 bg-card border border-border/50 rounded-lg disabled:opacity-50 hover:bg-secondary transition-colors"
+                >
+                  Anterior
+                </button>
+                <span className="text-sm font-medium text-muted-foreground">
+                  Página {page + 1} de {concursosPage.totalPages}
+                </span>
+                <button
+                  onClick={() => setPage((p) => Math.min(concursosPage.totalPages - 1, p + 1))}
+                  disabled={page >= concursosPage.totalPages - 1}
+                  className="px-4 py-2 bg-card border border-border/50 rounded-lg disabled:opacity-50 hover:bg-secondary transition-colors"
+                >
+                  Próxima
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           (activeTab === "todos" || user) && !currentLoading && !currentError && (
             <div className="w-full py-16 text-center text-muted-foreground glass rounded-xl animate-fade-in flex flex-col items-center justify-center">

@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface ConcursoRepository extends JpaRepository<Concurso, UUID> {
-    List<Concurso> findByStatus(StatusConcurso status);
+    org.springframework.data.domain.Page<Concurso> findByStatus(StatusConcurso status, org.springframework.data.domain.Pageable pageable);
 }

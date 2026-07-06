@@ -29,12 +29,13 @@ public class ConcursoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ConcursoResponseDTO>> findAll(
-            @RequestParam(required = false) StatusConcurso status) {
+    public ResponseEntity<org.springframework.data.domain.Page<ConcursoResponseDTO>> findAll(
+            @RequestParam(required = false) StatusConcurso status,
+            org.springframework.data.domain.Pageable pageable) {
         if (status != null) {
-            return ResponseEntity.ok(concursoService.findByStatus(status));
+            return ResponseEntity.ok(concursoService.findByStatus(status, pageable));
         }
-        return ResponseEntity.ok(concursoService.findAll());
+        return ResponseEntity.ok(concursoService.findAll(pageable));
     }
 
     @GetMapping("/recomendados")

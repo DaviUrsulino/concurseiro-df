@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
 import Link from 'next/link';
 import { UserPlus, ArrowRight, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function CadastroPage() {
   const [formData, setFormData] = useState({
@@ -16,7 +17,6 @@ export default function CadastroPage() {
     pretensaoSalarial: ''
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   
   const router = useRouter();
   const { login } = useAuth();
@@ -28,7 +28,6 @@ export default function CadastroPage() {
   const handleCadastro = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
     
     try {
       const response = await api.post('/auth/registrar', {
@@ -36,25 +35,27 @@ export default function CadastroPage() {
         pretensaoSalarial: parseFloat(formData.pretensaoSalarial) || 0
       });
       login(response.data);
-      alert("Cadastro concluído com sucesso! 🎉\n\nUm E-mail de Boas Vindas foi disparado. Como estamos em modo local, o e-mail foi salvo em um arquivo na pasta 'backend/emails_simulados' no seu VS Code. Vá lá conferir o layout!");
+      toast.success("Cadastro concluído com sucesso! 🎉", {
+        description: "Um E-mail de Boas Vindas foi disparado. Confira na pasta 'backend/emails_simulados'."
+      });
       router.push('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao criar conta. Tente novamente.');
+      toast.error(err.response?.data?.message || 'Erro ao criar conta. Tente novamente.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-background flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center text-primary">
           <UserPlus className="h-12 w-12" />
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
           Crie sua conta
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-muted-foreground">
           Já tem uma conta?{' '}
           <Link href="/login" className="font-medium text-primary hover:text-primary/80 transition-colors underline decoration-primary/30 underline-offset-4">
             Faça login aqui
@@ -63,17 +64,8 @@ export default function CadastroPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl sm:rounded-xl sm:px-10 border border-gray-100">
+        <div className="bg-card py-8 px-4 shadow-xl sm:rounded-xl sm:px-10 border border-border/50">
           <form className="space-y-5" onSubmit={handleCadastro}>
-            {error && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md">
-                <div className="flex">
-                  <div className="ml-3">
-                    <p className="text-sm text-red-700">{error}</p>
-                  </div>
-                </div>
-              </div>
-            )}
 
             <div>
               <label htmlFor="nome" className="block text-sm font-medium text-gray-700">Nome Completo</label>

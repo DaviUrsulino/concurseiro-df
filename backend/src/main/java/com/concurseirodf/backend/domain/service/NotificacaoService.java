@@ -79,4 +79,30 @@ public class NotificacaoService {
             log.error("Erro ao gerar e-mail de boas-vindas simulado para {}", usuario.getEmail(), e);
         }
     }
+
+    public void enviarEmailRecuperacaoSenha(String email, String resetLink) {
+        log.info("Iniciando envio de e-mail de recuperação de senha para {}", email);
+        
+        try {
+            Path dirPath = Paths.get(EMAILS_DIR);
+            if (!Files.exists(dirPath)) {
+                Files.createDirectories(dirPath);
+            }
+
+            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+            String fileName = EMAILS_DIR + "/RecuperacaoSenha_" + email.replaceAll("[^a-zA-Z0-9]", "_") + "_" + timestamp + ".txt";
+
+            String body = "Olá,\n\nVocê solicitou a redefinição de sua senha.\nClique no link abaixo para criar uma nova senha:\n" +
+                          resetLink + "\n\nSe você não solicitou, ignore este e-mail.";
+
+            try (FileWriter fileWriter = new FileWriter(new File(fileName))) {
+                fileWriter.write(body);
+            }
+
+            log.info("E-mail de recuperação gerado com sucesso em: {}", fileName);
+
+        } catch (IOException e) {
+            log.error("Erro ao gerar e-mail de recuperação de senha simulado para {}", email, e);
+        }
+    }
 }

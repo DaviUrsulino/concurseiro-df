@@ -61,7 +61,7 @@ class ProgressoServiceTest {
         when(progressoRepository.findByUsuarioIdAndCargoId(usuario.getId(), cargo.getId())).thenReturn(Optional.empty());
         when(progressoRepository.save(any(Progresso.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        ProgressoDTO result = progressoService.updateProgresso(usuario, cargo.getId(), dto);
+        ProgressoDTO result = progressoService.saveProgresso(usuario, cargo.getId(), dto);
 
         assertNotNull(result);
         assertEquals(2, result.topicosConcluidos().size());

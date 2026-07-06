@@ -20,3 +20,5 @@ jdk-21*/
 # Python / MkDocs
 .venv/
 site/
+venv/
+frontend/public/docs/

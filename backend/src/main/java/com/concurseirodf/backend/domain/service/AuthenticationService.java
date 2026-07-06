@@ -20,6 +20,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final NotificacaoService notificacaoService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         if (repository.findByEmail(request.email()).isPresent()) {
@@ -34,6 +35,8 @@ public class AuthenticationService {
         user.setPretensaoSalarial(request.pretensaoSalarial());
 
         repository.save(user);
+        
+        notificacaoService.enviarEmailBoasVindas(user);
 
         var jwtToken = jwtService.generateToken(user);
         return new AuthenticationResponse(jwtToken, user.getNome(), user.getEmail(), user.getNivelEscolaridade());
